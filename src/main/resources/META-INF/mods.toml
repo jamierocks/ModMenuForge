@@ -1,0 +1,12 @@
+modLoader="javafml"
+loaderVersion="[34,)"
+license="MIT"
+
+[[mods]]
+modId="modmenu"
+displayName="ModMenu for Forge"
+version="${file.jarVersion}"
+authors="Prospector"
+description='''
+Port of the popular ModMenu modification for Fabric to Minecraft Forge.
+'''
