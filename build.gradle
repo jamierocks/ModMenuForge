@@ -4,13 +4,18 @@ buildscript {
         maven {
             url = 'https://files.minecraftforge.net/maven'
         }
+        maven {
+            url = 'https://repo.spongepowered.org/maven/'
+        }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:3.0.187'
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
 
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.spongepowered.mixin'
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
@@ -24,6 +29,7 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
+            arg '-mixin.config=modmenu.mixins.json'
 
             mods {
                 modmenuforge {
@@ -34,8 +40,24 @@ minecraft {
     }
 }
 
+mixin {
+    add sourceSets.main, 'modmenu.refmap.json'
+}
+
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.4-35.0.18'
+}
+
+jar {
+    manifest {
+        attributes([
+                "Implementation-Title": project.name,
+                "Implementation-Version": project.version,
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+
+                "MixinConfigs": "modmenu.mixins.json"
+        ])
+    }
 }
 
 jar.finalizedBy('reobfJar')
